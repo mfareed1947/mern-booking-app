@@ -2,11 +2,13 @@ import express, { Request, Response, response } from "express";
 import cors from "cors";
 import "dotenv/config";
 import mongoose from "mongoose";
-import userRoutes from "./routes/users";
-import authRoutes from "./routes/auth";
 import cookieParser from "cookie-parser";
 import path from "path";
 import { v2 as cloudinary } from "cloudinary";
+
+import userRoutes from "./routes/users";
+import authRoutes from "./routes/auth";
+import hotelRoutes from "./routes/my-hotels";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
@@ -32,6 +34,8 @@ app.use(
 app.use("/api/users", userRoutes);
 
 app.use("/api/auth", authRoutes);
+
+app.use("/api/add-hotels", hotelRoutes);
 
 app.get("/api/test", (req: Request, res: Response) => {
   res.json({ message: "Hello from express! end points" });
