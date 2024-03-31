@@ -18,7 +18,7 @@ function App() {
             />
             <Route path="/register" element={<Register />} />
             <Route path="/sign-in" element={<SignIn />} />
-            {!isLoggedIn && (
+            {isLoggedIn && (
               <>
                 <Route path="/add-hotel" element={<AddHotel />} />
               </>
