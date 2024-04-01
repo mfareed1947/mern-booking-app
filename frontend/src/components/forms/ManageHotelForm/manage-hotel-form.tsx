@@ -23,6 +23,7 @@ export type HotelFormData = {
 
 const ManageHotelForm = () => {
   const formMethods = useForm<HotelFormData>();
+  console.log("🚀 ~ ManageHotelForm ~ formMethods:", formMethods)
   return (
     <>
       <FormProvider {...formMethods}>
