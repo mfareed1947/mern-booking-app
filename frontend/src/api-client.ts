@@ -56,3 +56,21 @@ export const validateToken = async () => {
 
   return response.json();
 };
+
+export const addHotel = async (hotelFormData: FormData) => {
+  const response = await fetch(`${API_BASE_URL}/api/add-hotels`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: hotelFormData,
+  });
+
+  const responseBody = await response.json();
+
+  if (!response.ok) {
+    throw new Error("Failed to add hotel");
+  }
+  return responseBody;
+};
