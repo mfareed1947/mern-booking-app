@@ -24,7 +24,7 @@ export const login: RouteHandler = async (
       return next(CustomErrorHandler.wrongCredentials());
     }
 
-    const acccess_token = JwtService.sign({ id: user.id }, "1hr");
+    const acccess_token = JwtService.sign({ userId: user.id }, "1hr");
 
     res.cookie("auth_token", acccess_token, {
       httpOnly: true,
