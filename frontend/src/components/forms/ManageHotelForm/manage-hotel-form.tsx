@@ -33,7 +33,7 @@ const ManageHotelForm = ({ onSave, isLoading }: Props) => {
 
   const onSubmit = handleSubmit((formDataJson: HotelFormData) => {
     const formData = new FormData();
-
+    
     formData.append("name", formDataJson.name);
     formData.append("city", formDataJson.city);
     formData.append("country", formDataJson.country);

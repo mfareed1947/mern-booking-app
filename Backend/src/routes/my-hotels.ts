@@ -26,11 +26,11 @@ router.post(
     body("pricePerNight")
       .notEmpty()
       .isNumeric()
-      .withMessage("Price per night is required in munber format"),
+      .withMessage("Price per night is required and must be a number"),
     body("facilities")
       .notEmpty()
       .isArray()
-      .withMessage("facilities is required"),
+      .withMessage("Facilities are required"),
   ],
   upload.array("imageFiles", 6),
   async (req: Request, res: Response) => {

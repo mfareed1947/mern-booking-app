@@ -6,7 +6,7 @@ import * as apiClient from "../api-client";
 const AddHotel = () => {
   const { showToast } = useAppContext();
 
-  const { mutate, isLoading } = useMutation(apiClient.addHotel, {
+  const { mutate, isLoading } = useMutation(apiClient.addMyHotel, {
     onSuccess: () => {
       showToast({ message: "Hotel Saved!", type: "SUCCESS" });
     },
