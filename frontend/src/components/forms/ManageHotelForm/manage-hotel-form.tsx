@@ -58,6 +58,7 @@ const ManageHotelForm = ({ onSave, isLoading }: Props) => {
       formData.append(`imageFiles`, imageFile);
     });
 
+    console.log("🚀 ~ onSubmit ~ formData:", formData)
     onSave(formData);
   });
 
