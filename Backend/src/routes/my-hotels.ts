@@ -37,13 +37,7 @@ router.post(
     try {
       const iamageFiles = req.files as Express.Multer.File[];
       const newHotel: HotelType = req.body;
-      const uploadPromises = iamageFiles.map(async (file: any) => {
-        const b64 = Buffer.from(file.buffer).toString("base64");
-        let dataURI = "data:" + file.mimetype + ";base64," + b64;
-        const res = await cloudinary.v2.uploader.upload(dataURI);
-        return res.url;
-      });
-      const imageUrls = await Promise.all(uploadPromises);
+      const imageUrls = await imageUploader(iamageFiles);
       newHotel.imageUrls = imageUrls;
       newHotel.lastUpdated = new Date();
       newHotel.userId = req.userId;
@@ -61,11 +55,72 @@ router.post(
 
 router.get("/", verifyToken, async (req: Request, res: Response) => {
   try {
-    const hotel = await Hotel.find({ userId: req.userId });
+    const hotel = await Hotel.find({ userId: req.userId }).sort({
+      lastUpdated: -1,
+    });
     res.json(hotel);
   } catch (error) {
     res.send(500).send({ message: "Error Fetching Hotels" });
   }
 });
+
+router.get("/:id", verifyToken, async (req: Request, res: Response) => {
+  const id = req.params.id.toString();
+  try {
+    const hotel = await Hotel.findOne({
+      _id: id,
+      userId: req.userId,
+    });
+    res.json(hotel);
+  } catch (error) {
+    res.send(500).send({ message: "Error Fetching Hotels" });
+  }
+});
+
+router.put(
+  "/:hotelId",
+  verifyToken,
+  upload.array("imageFiles"),
+  async (req: Request, res: Response) => {
+    try {
+      const updateHotel: HotelType = req.body;
+      updateHotel.lastUpdated = new Date();
+
+      const hotel = await Hotel.findByIdAndUpdate(
+        {
+          _id: req.params.hotelId,
+          userId: req.params.userId,
+        },
+        updateHotel,
+        { new: true }
+      );
+
+      if (!hotel) {
+        return res.status(404).json({ message: "Hotel not found" });
+      }
+
+      const files = req.files as Express.Multer.File[];
+      const updatedIamgeUrls = await imageUploader(files);
+
+      hotel.imageUrls = [...updatedIamgeUrls, ...(updateHotel.imageUrls || [])];
+
+      await hotel.save();
+      res.status(201).json(hotel);
+    } catch (error) {
+      res.send(500).send({ message: "Error throw Hotels" });
+    }
+  }
+);
+
+async function imageUploader(iamageFiles: Express.Multer.File[]) {
+  const uploadPromises = iamageFiles.map(async (file: any) => {
+    const b64 = Buffer.from(file.buffer).toString("base64");
+    let dataURI = "data:" + file.mimetype + ";base64," + b64;
+    const res = await cloudinary.v2.uploader.upload(dataURI);
+    return res.url;
+  });
+  const imageUrls = await Promise.all(uploadPromises);
+  return imageUrls;
+}
 
 export default router;
