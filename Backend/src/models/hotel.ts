@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 export type HotelType = {
-  _id?: any;
+  _id: any;
   id: string;
   userId: string;
   name: string;
