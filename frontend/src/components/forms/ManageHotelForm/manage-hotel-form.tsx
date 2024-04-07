@@ -39,6 +39,7 @@ const ManageHotelForm = ({ onSave, isLoading, hotel }: Props) => {
   }, [hotel, reset]);
 
   const onSubmit = handleSubmit((formDataJson: HotelFormData) => {
+    console.log("🚀 ~ onSubmit ~ formDataJson:", formDataJson)
     const formData = new FormData();
 
     if (hotel) {
