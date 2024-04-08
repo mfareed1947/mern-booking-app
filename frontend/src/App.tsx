@@ -6,6 +6,7 @@ import AddHotel from "./pages/add-hotel";
 import Register from "./pages/register";
 import MyHotel from "./pages/my-hotel";
 import SignIn from "./pages/sign-in";
+import Search from "./pages/search";
 
 import Layout from "./layout/Layout";
 
@@ -30,6 +31,7 @@ function App() {
               </>
             )}
             <Route path="*" element={<Navigate to="/" />} />
+            <Route path="/search" element={<Search />} />
           </Routes>
         </Layout>
       </BrowserRouter>

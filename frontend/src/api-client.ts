@@ -1,6 +1,7 @@
 import { RegisterFormData } from "./pages/register";
 import { SignInFormData } from "./pages/sign-in";
 import { HotelType } from "../../Backend/src/models/hotel";
+import { HotelSearchResponse } from "../../Backend/src/types/index";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
@@ -106,6 +107,35 @@ export const updateMyHotelById = async (hotelFormData: FormData) => {
 
   if (!response.ok) {
     throw new Error("Failed to update hotel");
+  }
+  return response.json();
+};
+
+export type SearchParams = {
+  destination: string;
+  checkIn: string;
+  checkOut: string;
+  adultCount: string;
+  childCount: string;
+  page: string;
+};
+
+export const searchHotel = async (
+  searchParams: SearchParams
+): Promise<HotelSearchResponse> => {
+  const queryParams = new URLSearchParams();
+  queryParams.append("destination", searchParams.destination || "");
+  queryParams.append("checkIn", searchParams.checkIn || "");
+  queryParams.append("checkOut", searchParams.checkOut || "");
+  queryParams.append("adultCount", searchParams.adultCount || "");
+  queryParams.append("childCount", searchParams.childCount || "");
+  queryParams.append("page", searchParams.page || "");
+
+  const response = await fetch(
+    `${API_BASE_URL}/api/hotels/search?${queryParams}`
+  );
+  if (!response.ok) {
+    throw new Error("Error fetching and searching in hotels");
   }
   return response.json();
 };
