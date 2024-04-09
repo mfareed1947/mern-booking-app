@@ -16,6 +16,7 @@ const SearchBar = () => {
   const [childCount, setChildCount] = useState<number>(search.childCount);
 
   const handleSubmit = (event: FormEvent) => {
+    console.log("🚀 ~ handleSubmit ~ event:", event)
     event.preventDefault();
     search.saveSearchValues(
       destination,
